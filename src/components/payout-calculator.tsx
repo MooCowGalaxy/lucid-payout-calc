@@ -268,18 +268,32 @@ export function PayoutCalculator() {
             </div>
           </div>
           {profit > 0 && result.consistencyPercent !== null && (
-            <p
-              className={`text-xs font-medium ${
-                result.consistencyPercent <= result.consistencyLimit!
-                  ? "text-emerald-600 dark:text-emerald-400"
-                  : "text-destructive"
-              }`}
-            >
-              Consistency: {result.consistencyPercent.toFixed(1)}%{" "}
-              <span className="font-normal text-muted-foreground">
-                (must be {result.consistencyLimit}% or less)
-              </span>
-            </p>
+            <div className="space-y-1">
+              <p
+                className={`text-xs font-medium ${
+                  result.consistencyPercent <= result.consistencyLimit!
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-destructive"
+                }`}
+              >
+                Consistency: {result.consistencyPercent.toFixed(1)}%{" "}
+                <span className="font-normal text-muted-foreground">
+                  (must be {result.consistencyLimit}% or less)
+                </span>
+              </p>
+              {result.consistencyPercent > result.consistencyLimit! && highestDay > 0 && (
+                <p className="text-xs text-muted-foreground">
+                  With a highest day of{" "}
+                  {fmt(highestDay)}, you need at least{" "}
+                  <span className="font-medium text-foreground">
+                    {fmt(Math.ceil(highestDay / (result.consistencyLimit! / 100)))}
+                  </span>{" "}
+                  in total profit to meet the consistency rule. Keep future daily
+                  profits under {fmt(highestDay)} and reach that total to be
+                  eligible.
+                </p>
+              )}
+            </div>
           )}
         </div>
       )}
